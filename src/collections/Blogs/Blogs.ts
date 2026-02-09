@@ -1,5 +1,14 @@
 import { CollectionConfig } from 'payload'
-import { HTMLConverterFeature, lexicalEditor, lexicalHTML } from '@payloadcms/richtext-lexical'
+import {
+  HTMLConverterFeature,
+  lexicalEditor,
+  lexicalHTML,
+  EXPERIMENTAL_TableFeature as TableFeature,
+  BlocksFeature,
+  InlineCodeFeature,
+  CodeBlock,
+} from '@payloadcms/richtext-lexical'
+import { CustomHTMLBlock } from '../../blocks/CustomHTMLBlock'
 import { FixedToolbarFeature } from '@payloadcms/richtext-lexical'
 import { preventTenantChange } from './hooks/preventTenantChange'
 import { isTenantOwner } from './access/isTenantOwner'
@@ -11,6 +20,9 @@ const Blogs: CollectionConfig = {
   labels: {
     singular: 'Blog',
     plural: 'Blogs',
+  },
+  versions: {
+    drafts: true,
   },
   fields: [
     {
@@ -53,9 +65,22 @@ const Blogs: CollectionConfig = {
       label: "Theme de l'article",
     },
     {
+      name: 'generateMetaButton',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/collections/Blogs/ui/GenerateAIButton#GenerateAIButton',
+        },
+        custom: {
+          type: 'meta',
+          label: 'Generate Meta with AI',
+        },
+      },
+    },
+    {
       name: 'metaDescription',
       type: 'textarea',
-      required: true,
+      required: false, // Changed to false to allow generation
       label: "Description de l'article - Utile pour le référencement",
       maxLength: 160,
     },
@@ -67,21 +92,45 @@ const Blogs: CollectionConfig = {
       required: true,
     },
     {
+      name: 'aiGenerator',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/GenerateArticleButton#GenerateArticleButton',
+        },
+      },
+    },
+    {
       name: 'content',
       type: 'richText',
-      required: true,
+      required: false, // Allow generation
       label: 'Contenu',
       editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
           FixedToolbarFeature(),
-          // The HTMLConverter Feature is the feature which manages the HTML serializers.
-          // If you do not pass any arguments to it, it will use the default serializers.
           HTMLConverterFeature({}),
+          TableFeature(),
+          InlineCodeFeature(),
+          BlocksFeature({ blocks: [CustomHTMLBlock, CodeBlock()] }),
         ],
+        // Explicitly ensuring Code Node support if needed by the feature
       }),
     },
     lexicalHTML('content', { name: 'content_html' }),
+    {
+      name: 'generateKeywordsButton',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/collections/Blogs/ui/GenerateAIButton#GenerateAIButton',
+        },
+        custom: {
+          type: 'keywords',
+          label: 'Generate Keywords with AI',
+        },
+      },
+    },
     {
       name: 'keywords',
       type: 'array',

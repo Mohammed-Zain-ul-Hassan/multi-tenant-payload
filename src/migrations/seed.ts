@@ -1,7 +1,12 @@
 import type { MigrateUpArgs } from '@payloadcms/db-mongodb'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
-  await payload.create({
+  const superAdmin = await payload.create({
     collection: 'users',
     data: {
       email: 'demo@payloadcms.com',
@@ -10,15 +15,22 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     },
   })
 
-  // The 'domains' field is used to associate a domain with this tenant.
-  // Uncomment and set the domain if you want to enable domain-based tenant assignment.
-
   const tenant1 = await payload.create({
     collection: 'tenants',
     data: {
       name: 'Tenant 1',
       slug: 'tenant-1',
-      // domains: [{ domain: 'abc.localhost.com:3000' }],
+      brandVoice: 'Professional, technical, and authoritative. Focus on developer experience and scalability.',
+      keywords: [
+        { keyword: 'PayloadCMS' },
+        { keyword: 'Multi-tenant' },
+        { keyword: 'TypeScript' },
+        { keyword: 'Next.js' }
+      ],
+      customData: [
+        { key: 'support_email', value: 'support@tenant1.com' },
+        { key: 'api_version', value: 'v2' }
+      ]
     },
   })
 
@@ -27,7 +39,16 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     data: {
       name: 'Tenant 2',
       slug: 'tenant-2',
-      // domains: [{ domain: 'bbc.localhost.com:3000' }],
+      brandVoice: 'Playful, creative, and engaging. Focus on modern design trends and user experience.',
+      keywords: [
+        { keyword: 'Design' },
+        { keyword: 'UX' },
+        { keyword: 'Frontend' },
+        { keyword: 'Innovation' }
+      ],
+      customData: [
+        { key: 'theme_mode', value: 'dark' }
+      ]
     },
   })
 
@@ -36,8 +57,43 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     data: {
       name: 'Tenant 3',
       slug: 'tenant-3',
-      // domains: [{ domain: 'cbc.localhost.com:3000' }],
+      brandVoice: 'Formal, informative, and academic. Focus on research, data integrity, and education.',
+      keywords: [
+        { keyword: 'Research' },
+        { keyword: 'Data Analysis' },
+        { keyword: 'Education' }
+      ],
     },
+  })
+
+  // Create some media items for the blogs
+  const imagePath = path.resolve(dirname, '../../media/Avatar_Aang.png')
+
+  const media1 = await payload.create({
+    collection: 'media',
+    data: {
+      alt: 'Avatar Tenant 1',
+      tenant: tenant1.id,
+    },
+    filePath: imagePath,
+  })
+
+  const media2 = await payload.create({
+    collection: 'media',
+    data: {
+      alt: 'Avatar Tenant 2',
+      tenant: tenant2.id,
+    },
+    filePath: imagePath,
+  })
+
+  const media3 = await payload.create({
+    collection: 'media',
+    data: {
+      alt: 'Avatar Tenant 3',
+      tenant: tenant3.id,
+    },
+    filePath: imagePath,
   })
 
   await payload.create({
@@ -50,10 +106,6 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
           roles: ['tenant-admin'],
           tenant: tenant1.id,
         },
-        // {
-        //   roles: ['tenant-admin'],
-        //   tenant: tenant2.id,
-        // },
       ],
       username: 'tenant1',
     },
@@ -108,106 +160,69 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
           tenant: tenant3.id,
         },
       ],
-      username: 'tenant3',
+      username: 'multi-admin',
     },
   })
+
+  const content = {
+    root: {
+      type: 'doc',
+      children: [
+        {
+          type: 'paragraph',
+          version: 1,
+          children: [
+            {
+              type: 'text',
+              text: 'Initial content...',
+            },
+          ],
+        },
+      ],
+      direction: 'ltr' as const,
+      format: 'left' as const,
+      indent: 0,
+      version: 1,
+    },
+  } as any
 
   await payload.create({
     collection: 'blogs',
     data: {
-      slug: 'home',
+      slug: 'home-1',
       tenant: tenant1.id,
       title: 'Page for Tenant 1',
-      user: 'someUserId', // Add the user field if required by the collection schema
-      featuredImage: 'imageId', // Add featured image if required
-      metaDescription: 'This is a page for Tenant 1', // Add meta description if required
-      content: {
-        root: {
-          type: 'doc', // The type should be 'doc' for richText
-          children: [
-            {
-              type: 'paragraph',
-              version: 1,
-              children: [
-                {
-                  type: 'text',
-                  text: 'This is the content for Tenant 1',
-                },
-              ],
-            },
-          ],
-          direction: 'ltr', // Set text direction if required
-          format: 'left', // Adjust text alignment
-          indent: 0,
-          version: 1,
-        },
-      },
+      user: superAdmin.id,
+      featuredImage: media1.id,
+      metaDescription: 'This is a page for Tenant 1',
+      content,
     },
   })
 
   await payload.create({
     collection: 'blogs',
     data: {
-      slug: 'home',
+      slug: 'home-2',
       tenant: tenant2.id,
       title: 'Page for Tenant 2',
-      user: 'someUserId', // Add the user field if required by the collection schema
-      featuredImage: 'imageId', // Add featured image if required
-      metaDescription: 'This is a page for Tenant 2', // Add meta description if required
-      content: {
-        root: {
-          type: 'doc', // The type should be 'doc' for richText
-          children: [
-            {
-              type: 'paragraph',
-              version: 1,
-              children: [
-                {
-                  type: 'text',
-                  text: 'This is the content for Tenant 2',
-                },
-              ],
-            },
-          ],
-          direction: 'ltr', // Set text direction if required
-          format: 'left', // Adjust text alignment
-          indent: 0,
-          version: 1,
-        },
-      },
+      user: superAdmin.id,
+      featuredImage: media2.id,
+      metaDescription: 'This is a page for Tenant 2',
+      content,
     },
   })
 
   await payload.create({
     collection: 'blogs',
     data: {
-      slug: 'home',
+      slug: 'home-3',
       tenant: tenant3.id,
       title: 'Page for Tenant 3',
-      user: 'someUserId', // Add the user field if required by the collection schema
-      featuredImage: 'imageId', // Add featured image if required
-      metaDescription: 'This is a page for Tenant 3', // Add meta description if required
-      content: {
-        root: {
-          type: 'doc', // The type should be 'doc' for richText
-          children: [
-            {
-              type: 'paragraph',
-              version: 1,
-              children: [
-                {
-                  type: 'text',
-                  text: 'This is the content for Tenant 3',
-                },
-              ],
-            },
-          ],
-          direction: 'ltr', // Set text direction if required
-          format: 'left', // Adjust text alignment
-          indent: 0,
-          version: 1,
-        },
-      },
+      user: superAdmin.id,
+      featuredImage: media3.id,
+      metaDescription: 'This is a page for Tenant 3',
+      content,
     },
   })
 }
+
