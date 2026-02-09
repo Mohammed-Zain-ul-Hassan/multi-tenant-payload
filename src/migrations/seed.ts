@@ -73,7 +73,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     collection: 'media',
     data: {
       alt: 'Avatar Tenant 1',
-      tenant: tenant1.id,
+      tenant: String(tenant1.id),
     },
     filePath: imagePath,
   })
@@ -82,7 +82,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     collection: 'media',
     data: {
       alt: 'Avatar Tenant 2',
-      tenant: tenant2.id,
+      tenant: String(tenant2.id),
     },
     filePath: imagePath,
   })
@@ -91,7 +91,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     collection: 'media',
     data: {
       alt: 'Avatar Tenant 3',
-      tenant: tenant3.id,
+      tenant: String(tenant3.id),
     },
     filePath: imagePath,
   })
@@ -104,7 +104,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       tenants: [
         {
           roles: ['tenant-admin'],
-          tenant: tenant1.id,
+          tenant: String(tenant1.id),
         },
       ],
       username: 'tenant1',
@@ -119,7 +119,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       tenants: [
         {
           roles: ['tenant-admin'],
-          tenant: tenant2.id,
+          tenant: String(tenant2.id),
         },
       ],
       username: 'tenant2',
@@ -134,7 +134,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       tenants: [
         {
           roles: ['tenant-admin'],
-          tenant: tenant3.id,
+          tenant: String(tenant3.id),
         },
       ],
       username: 'tenant3',
@@ -149,15 +149,15 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       tenants: [
         {
           roles: ['tenant-admin'],
-          tenant: tenant1.id,
+          tenant: String(tenant1.id),
         },
         {
           roles: ['tenant-admin'],
-          tenant: tenant2.id,
+          tenant: String(tenant2.id),
         },
         {
           roles: ['tenant-admin'],
-          tenant: tenant3.id,
+          tenant: String(tenant3.id),
         },
       ],
       username: 'multi-admin',
@@ -166,7 +166,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
 
   const content = {
     root: {
-      type: 'doc',
+      type: 'root',
       children: [
         {
           type: 'paragraph',
@@ -190,10 +190,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     collection: 'blogs',
     data: {
       slug: 'home-1',
-      tenant: tenant1.id,
+      tenant: String(tenant1.id),
       title: 'Page for Tenant 1',
-      user: superAdmin.id,
-      featuredImage: media1.id,
+      user: String(superAdmin.id),
+      featuredImage: String(media1.id),
       metaDescription: 'This is a page for Tenant 1',
       content,
     },
@@ -203,10 +203,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     collection: 'blogs',
     data: {
       slug: 'home-2',
-      tenant: tenant2.id,
+      tenant: String(tenant2.id),
       title: 'Page for Tenant 2',
-      user: superAdmin.id,
-      featuredImage: media2.id,
+      user: String(superAdmin.id),
+      featuredImage: String(media2.id),
       metaDescription: 'This is a page for Tenant 2',
       content,
     },
@@ -216,10 +216,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
     collection: 'blogs',
     data: {
       slug: 'home-3',
-      tenant: tenant3.id,
+      tenant: String(tenant3.id),
       title: 'Page for Tenant 3',
-      user: superAdmin.id,
-      featuredImage: media3.id,
+      user: String(superAdmin.id),
+      featuredImage: String(media3.id),
       metaDescription: 'This is a page for Tenant 3',
       content,
     },
