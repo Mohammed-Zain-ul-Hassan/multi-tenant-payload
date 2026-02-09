@@ -1,18 +1,22 @@
 import type { MigrateUpArgs } from '@payloadcms/db-mongodb'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import fs from 'fs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-export async function up({ payload }: MigrateUpArgs): Promise<void> {
+export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   const superAdmin = await payload.create({
     collection: 'users',
     data: {
       email: 'demo@payloadcms.com',
       password: 'demo',
       roles: ['super-admin'],
+      collection: 'users',
     },
+    draft: false,
+    req,
   })
 
   const tenant1 = await payload.create({
@@ -32,6 +36,8 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         { key: 'api_version', value: 'v2' }
       ]
     },
+    draft: false,
+    req,
   })
 
   const tenant2 = await payload.create({
@@ -50,6 +56,8 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         { key: 'theme_mode', value: 'dark' }
       ]
     },
+    draft: false,
+    req,
   })
 
   const tenant3 = await payload.create({
@@ -64,10 +72,15 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         { keyword: 'Education' }
       ],
     },
+    draft: false,
+    req,
   })
 
   // Create some media items for the blogs
   const imagePath = path.resolve(dirname, '../../media/Avatar_Aang.png')
+
+  const mediaData = fs.readFileSync(imagePath)
+  const mediaSize = fs.statSync(imagePath).size
 
   const media1 = await payload.create({
     collection: 'media',
@@ -75,7 +88,13 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       alt: 'Avatar Tenant 1',
       tenant: String(tenant1.id),
     },
-    filePath: imagePath,
+    file: {
+      name: 'Avatar_Aang.png',
+      mimetype: 'image/png',
+      data: mediaData,
+      size: mediaSize,
+    },
+    req,
   })
 
   const media2 = await payload.create({
@@ -84,7 +103,13 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       alt: 'Avatar Tenant 2',
       tenant: String(tenant2.id),
     },
-    filePath: imagePath,
+    file: {
+      name: 'Avatar_Aang.png',
+      mimetype: 'image/png',
+      data: mediaData,
+      size: mediaSize,
+    },
+    req,
   })
 
   const media3 = await payload.create({
@@ -93,7 +118,13 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       alt: 'Avatar Tenant 3',
       tenant: String(tenant3.id),
     },
-    filePath: imagePath,
+    file: {
+      name: 'Avatar_Aang.png',
+      mimetype: 'image/png',
+      data: mediaData,
+      size: mediaSize,
+    },
+    req,
   })
 
   await payload.create({
@@ -108,7 +139,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         },
       ],
       username: 'tenant1',
+      collection: 'users',
     },
+    draft: false,
+    req,
   })
 
   await payload.create({
@@ -123,7 +157,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         },
       ],
       username: 'tenant2',
+      collection: 'users',
     },
+    draft: false,
+    req,
   })
 
   await payload.create({
@@ -138,7 +175,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         },
       ],
       username: 'tenant3',
+      collection: 'users',
     },
+    draft: false,
+    req,
   })
 
   await payload.create({
@@ -161,7 +201,10 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
         },
       ],
       username: 'multi-admin',
+      collection: 'users',
     },
+    draft: false,
+    req,
   })
 
   const content = {
@@ -197,6 +240,8 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       metaDescription: 'This is a page for Tenant 1',
       content,
     },
+    draft: false,
+    req,
   })
 
   await payload.create({
@@ -210,6 +255,8 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       metaDescription: 'This is a page for Tenant 2',
       content,
     },
+    draft: false,
+    req,
   })
 
   await payload.create({
@@ -223,6 +270,8 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
       metaDescription: 'This is a page for Tenant 3',
       content,
     },
+    draft: false,
+    req,
   })
 }
 
