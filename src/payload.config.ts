@@ -20,7 +20,7 @@ export default buildConfig({
   serverURL, // ✅ Added this to generate correct media URLs
   admin: {
     components: {
-      afterNavLinks: ['@/components/TenantSelector#TenantSelectorRSC'],
+      afterNavLinks: ['/src/components/TenantSelector#TenantSelectorRSC'],
     },
     user: 'users',
   },

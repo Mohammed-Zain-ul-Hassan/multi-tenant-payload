@@ -69,7 +69,7 @@ const Blogs: CollectionConfig = {
       type: 'ui',
       admin: {
         components: {
-          Field: '@/collections/Blogs/ui/GenerateAIButton#GenerateAIButton',
+          Field: '/src/collections/Blogs/ui/GenerateAIButton#GenerateAIButton',
         },
         custom: {
           type: 'meta',
@@ -96,7 +96,7 @@ const Blogs: CollectionConfig = {
       type: 'ui',
       admin: {
         components: {
-          Field: '@/components/GenerateArticleButton#GenerateArticleButton',
+          Field: '/src/components/GenerateArticleButton#GenerateArticleButton',
         },
       },
     },
@@ -123,7 +123,7 @@ const Blogs: CollectionConfig = {
       type: 'ui',
       admin: {
         components: {
-          Field: '@/collections/Blogs/ui/GenerateAIButton#GenerateAIButton',
+          Field: '/src/collections/Blogs/ui/GenerateAIButton#GenerateAIButton',
         },
         custom: {
           type: 'keywords',
