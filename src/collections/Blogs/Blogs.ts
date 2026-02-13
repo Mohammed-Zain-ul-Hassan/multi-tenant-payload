@@ -14,7 +14,6 @@ import { preventTenantChange } from './hooks/preventTenantChange'
 import { isTenantOwner } from './access/isTenantOwner'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import generateSlug from './hooks/generateSlug'
-import { PreviewButton } from './ui/PreviewButton'
 
 // ... existing imports ...
 
@@ -56,7 +55,7 @@ const Blogs: CollectionConfig = {
       admin: {
         position: 'sidebar',
         components: {
-          Field: PreviewButton as any,
+          Field: '/src/collections/Blogs/ui/PreviewButton#PreviewButton',
         },
       },
     },
