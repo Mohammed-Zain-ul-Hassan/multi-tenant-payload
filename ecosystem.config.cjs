@@ -3,6 +3,6 @@ module.exports = {
         name: "multi-tenant-payload",
         script: "npm",
         args: "start",
-        env_file: ".env"
+        env_file: "/home/debian/multi-tenant-payload/.env"
     }]
 }
