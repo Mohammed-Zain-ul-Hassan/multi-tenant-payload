@@ -1,3 +1,4 @@
+import { PreviewButton as PreviewButton_5d41913b757b77f11d4ed36d28d59ef5 } from '../../../../src/collections/Blogs/ui/PreviewButton'
 import { GenerateAIButton as GenerateAIButton_641756ed39e735dfe21430641551d316 } from '../../../../src/collections/Blogs/ui/GenerateAIButton'
 import { GenerateArticleButton as GenerateArticleButton_409b6a57b6110ceaceada4a375323aec } from '../../../../src/components/GenerateArticleButton'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -33,6 +34,7 @@ import { TenantSelectorRSC as TenantSelectorRSC_2a237656d6e3d2de6f5f63197241026c
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
+  "/src/collections/Blogs/ui/PreviewButton#PreviewButton": PreviewButton_5d41913b757b77f11d4ed36d28d59ef5,
   "/src/collections/Blogs/ui/GenerateAIButton#GenerateAIButton": GenerateAIButton_641756ed39e735dfe21430641551d316,
   "/src/components/GenerateArticleButton#GenerateArticleButton": GenerateArticleButton_409b6a57b6110ceaceada4a375323aec,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
