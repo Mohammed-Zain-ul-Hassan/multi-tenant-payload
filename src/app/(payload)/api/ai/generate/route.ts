@@ -18,6 +18,7 @@ export async function POST(req: Request) {
         const tenant = await payload.findByID({
             collection: 'tenants',
             id: tenantId,
+            overrideAccess: true, // Fix for "Not Found" if user context is missing
         });
 
         const brandVoice = tenant.brandVoice || undefined;

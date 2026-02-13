@@ -1,5 +1,5 @@
-import { GenerateAIButton as GenerateAIButton_4ad06ef8d1e9081fe7182d480a4cf6a0 } from '@/collections/Blogs/ui/GenerateAIButton'
-import { GenerateArticleButton as GenerateArticleButton_d60a19e8492eadbe2e2e3af14bca8cf2 } from '@/components/GenerateArticleButton'
+import { GenerateAIButton as GenerateAIButton_641756ed39e735dfe21430641551d316 } from '../../../../src/collections/Blogs/ui/GenerateAIButton'
+import { GenerateArticleButton as GenerateArticleButton_409b6a57b6110ceaceada4a375323aec } from '../../../../src/components/GenerateArticleButton'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -29,12 +29,12 @@ import { BlockquoteFeatureClient as BlockquoteFeatureClient_e70f5e05f09f93e00b99
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { TenantSelectorRSC as TenantSelectorRSC_9d7720c4b50db35595dfefa592fabd33 } from '@/components/TenantSelector'
+import { TenantSelectorRSC as TenantSelectorRSC_2a237656d6e3d2de6f5f63197241026c } from '../../../../src/components/TenantSelector'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
-  "@/collections/Blogs/ui/GenerateAIButton#GenerateAIButton": GenerateAIButton_4ad06ef8d1e9081fe7182d480a4cf6a0,
-  "@/components/GenerateArticleButton#GenerateArticleButton": GenerateArticleButton_d60a19e8492eadbe2e2e3af14bca8cf2,
+  "/src/collections/Blogs/ui/GenerateAIButton#GenerateAIButton": GenerateAIButton_641756ed39e735dfe21430641551d316,
+  "/src/components/GenerateArticleButton#GenerateArticleButton": GenerateArticleButton_409b6a57b6110ceaceada4a375323aec,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -64,6 +64,6 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/components/TenantSelector#TenantSelectorRSC": TenantSelectorRSC_9d7720c4b50db35595dfefa592fabd33,
+  "/src/components/TenantSelector#TenantSelectorRSC": TenantSelectorRSC_2a237656d6e3d2de6f5f63197241026c,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

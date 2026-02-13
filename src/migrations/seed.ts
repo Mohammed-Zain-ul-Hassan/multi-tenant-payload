@@ -6,67 +6,54 @@ import fs from 'fs'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-// Hardcoded IDs to ensure valid BSON ObjectIds
-const ADMIN_ID = '65d63f27f0e3412345678901'
-const TENANT_1_ID = '65d63f27f0e3412345678911'
-const TENANT_2_ID = '65d63f27f0e3412345678912'
-const TENANT_3_ID = '65d63f27f0e3412345678913'
-const MEDIA_1_ID = '65d63f27f0e3412345679001'
-const MEDIA_2_ID = '65d63f27f0e3412345679002'
-const MEDIA_3_ID = '65d63f27f0e3412345679003'
-
 export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   console.log('--- STARTING SEED MIGRATION ---')
 
   // Create Super Admin
-  await payload.create({
+  const admin = await payload.create({
     collection: 'users',
     data: {
-      id: ADMIN_ID,
       email: 'demo@payloadcms.com',
       password: 'demo',
       roles: ['super-admin'],
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
   })
 
   // Create Tenants
-  await payload.create({
+  const tenant1 = await payload.create({
     collection: 'tenants',
     data: {
-      id: TENANT_1_ID,
       name: 'Tenant 1',
       slug: 'tenant-1',
       brandVoice: 'Professional and authoritative.',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
   })
 
-  await payload.create({
+  const tenant2 = await payload.create({
     collection: 'tenants',
     data: {
-      id: TENANT_2_ID,
       name: 'Tenant 2',
       slug: 'tenant-2',
       brandVoice: 'Creative and engaging.',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
   })
 
-  await payload.create({
+  const tenant3 = await payload.create({
     collection: 'tenants',
     data: {
-      id: TENANT_3_ID,
       name: 'Tenant 3',
       slug: 'tenant-3',
       brandVoice: 'Informative and academic.',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -77,13 +64,12 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   const mediaData = fs.readFileSync(imagePath)
   const mediaSize = fs.statSync(imagePath).size
 
-  await payload.create({
+  const media1 = await payload.create({
     collection: 'media',
     data: {
-      id: MEDIA_1_ID,
       alt: 'Media 1',
-      tenant: TENANT_1_ID,
-    } as any,
+      tenant: tenant1.id,
+    },
     file: {
       name: 'Avatar_Aang.png',
       mimetype: 'image/png',
@@ -95,13 +81,12 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     req,
   })
 
-  await payload.create({
+  const media2 = await payload.create({
     collection: 'media',
     data: {
-      id: MEDIA_2_ID,
       alt: 'Media 2',
-      tenant: TENANT_2_ID,
-    } as any,
+      tenant: tenant2.id,
+    },
     file: {
       name: 'Avatar_Aang.png',
       mimetype: 'image/png',
@@ -113,13 +98,12 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     req,
   })
 
-  await payload.create({
+  const media3 = await payload.create({
     collection: 'media',
     data: {
-      id: MEDIA_3_ID,
       alt: 'Media 3',
-      tenant: TENANT_3_ID,
-    } as any,
+      tenant: tenant3.id,
+    },
     file: {
       name: 'Avatar_Aang.png',
       mimetype: 'image/png',
@@ -137,9 +121,9 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     data: {
       email: 'tenant1@payloadcms.com',
       password: 'test',
-      tenants: [{ roles: ['tenant-admin'], tenant: TENANT_1_ID } as any],
+      tenants: [{ roles: ['tenant-admin'], tenant: tenant1.id }],
       username: 'tenant1',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -150,9 +134,9 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     data: {
       email: 'tenant2@payloadcms.com',
       password: 'test',
-      tenants: [{ roles: ['tenant-admin'], tenant: TENANT_2_ID } as any],
+      tenants: [{ roles: ['tenant-admin'], tenant: tenant2.id }],
       username: 'tenant2',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -163,9 +147,9 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     data: {
       email: 'tenant3@payloadcms.com',
       password: 'test',
-      tenants: [{ roles: ['tenant-admin'], tenant: TENANT_3_ID } as any],
+      tenants: [{ roles: ['tenant-admin'], tenant: tenant3.id }],
       username: 'tenant3',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -178,12 +162,12 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       email: 'multi-admin@payloadcms.com',
       password: 'test',
       tenants: [
-        { roles: ['tenant-admin'], tenant: TENANT_1_ID } as any,
-        { roles: ['tenant-admin'], tenant: TENANT_2_ID } as any,
-        { roles: ['tenant-admin'], tenant: TENANT_3_ID } as any,
+        { roles: ['tenant-admin'], tenant: tenant1.id },
+        { roles: ['tenant-admin'], tenant: tenant2.id },
+        { roles: ['tenant-admin'], tenant: tenant3.id },
       ],
       username: 'multi-admin',
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -205,20 +189,20 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       indent: 0,
       version: 1,
     },
-  } as any
+  }
 
   // Blogs
   await payload.create({
     collection: 'blogs',
     data: {
       slug: 'home-1',
-      tenant: TENANT_1_ID,
+      tenant: tenant1.id,
       title: 'Page for Tenant 1',
-      user: ADMIN_ID,
-      featuredImage: MEDIA_1_ID,
+      user: admin.id,
+      featuredImage: media1.id,
       metaDescription: 'This is a page for Tenant 1',
       content,
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -228,13 +212,13 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     collection: 'blogs',
     data: {
       slug: 'home-2',
-      tenant: TENANT_2_ID,
+      tenant: tenant2.id,
       title: 'Page for Tenant 2',
-      user: ADMIN_ID,
-      featuredImage: MEDIA_2_ID,
+      user: admin.id,
+      featuredImage: media2.id,
       metaDescription: 'This is a page for Tenant 2',
       content,
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,
@@ -244,13 +228,13 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
     collection: 'blogs',
     data: {
       slug: 'home-3',
-      tenant: TENANT_3_ID,
+      tenant: tenant3.id,
       title: 'Page for Tenant 3',
-      user: ADMIN_ID,
-      featuredImage: MEDIA_3_ID,
+      user: admin.id,
+      featuredImage: media3.id,
       metaDescription: 'This is a page for Tenant 3',
       content,
-    } as any,
+    },
     overrideAccess: true,
     draft: false,
     req,

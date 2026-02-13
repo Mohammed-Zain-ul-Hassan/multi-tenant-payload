@@ -8,13 +8,14 @@ import React from "react";
 
 import { RenderPage } from "../../../components/RenderPage";
 
+// ...existing imports...
+
 export default async function Page({
   params: paramsPromise,
 }: {
   params: Promise<{ slug?: string[]; tenant: string }>;
 }) {
   const params = await paramsPromise;
-
   const headers = await getHeaders();
   const payload = await getPayload({ config: configPromise });
   const { user } = await payload.auth({ headers });
@@ -30,44 +31,40 @@ export default async function Page({
     },
   });
 
-  const slug = params?.slug;
+  const tenant = tenantsQuery.docs[0];
 
-  if (tenantsQuery.docs.length === 0) {
-    redirect(
-      `/${params.tenant}/login?redirect=${encodeURIComponent(
-        `/${params.tenant}${slug ? `/${slug.join("/")}` : ""}`
-      )}`
-    );
+  if (!tenant) {
+    return notFound();
   }
 
-  const slugConstraint: Where = slug
-    ? {
-        slug: {
-          equals: slug.join("/"),
+  const slug = params?.slug;
+  const slugString = slug ? slug.join("/") : "home";
+
+  // Try to find a blog post with this slug 
+  const blogsQuery = await payload.find({
+    collection: "blogs",
+    where: {
+      and: [
+        {
+          slug: {
+            equals: slugString,
+          },
         },
-      }
-    : {
-        or: [
-          {
-            slug: {
-              equals: "",
-            },
+        {
+          tenant: {
+            equals: tenant.id,
           },
-          {
-            slug: {
-              equals: "home",
-            },
-          },
-          {
-            slug: {
-              exists: false,
-            },
-          },
-        ],
-      };
+        },
+      ],
+    },
+  });
 
-  // Removed the `pages` collection query
+  const blog = blogsQuery.docs[0];
 
-  // Render a fallback or default view if needed
+  if (blog) {
+    return <RenderPage data={blog} type="blog" />;
+  }
+
+  // If no blog found, maybe handle pages later... for now just return null 
   return <RenderPage data={null} />;
 }
