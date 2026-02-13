@@ -15,6 +15,8 @@ import { isTenantOwner } from './access/isTenantOwner'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import generateSlug from './hooks/generateSlug'
 
+// ... existing imports ...
+
 const Blogs: CollectionConfig = {
   slug: 'blogs',
   labels: {
@@ -45,6 +47,16 @@ const Blogs: CollectionConfig = {
       admin: {
         condition: (data, siblingData, { user }) => !!user?.roles?.includes('super-admin'),
         position: 'sidebar', // Optionnel, pour afficher dans la barre latérale
+      },
+    },
+    {
+      name: 'previewButton',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '/src/collections/Blogs/ui/PreviewButton#PreviewButton',
+        },
       },
     },
     {
