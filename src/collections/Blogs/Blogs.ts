@@ -109,12 +109,30 @@ const Blogs: CollectionConfig = {
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
           FixedToolbarFeature(),
-          HTMLConverterFeature({}),
+          HTMLConverterFeature({
+            converters: ({ defaultConverters }) => [
+              ...defaultConverters,
+              {
+                converter: ({ node }: any) => {
+                  return `<pre class="code-block"><code class="language-${node.fields.language}">${node.fields.code}</code></pre>`
+                },
+                nodeTypes: ['block'],
+              },
+              {
+                converter: ({ node }: any) => {
+                  if (node.fields?.blockType === 'custom-html') {
+                    return node.fields.code || ''
+                  }
+                  return ''
+                },
+                nodeTypes: ['block'],
+              },
+            ],
+          }),
           TableFeature(),
           InlineCodeFeature(),
           BlocksFeature({ blocks: [CustomHTMLBlock, CodeBlock()] }),
         ],
-        // Explicitly ensuring Code Node support if needed by the feature
       }),
     },
     lexicalHTML('content', { name: 'content_html' }),

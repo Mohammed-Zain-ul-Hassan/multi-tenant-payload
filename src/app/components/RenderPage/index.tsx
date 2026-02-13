@@ -26,14 +26,44 @@ export const RenderPage = ({ data, type }: { data: any; type?: string }) => {
           </div>
         )}
         <h1 className="text-5xl font-bold mb-6">{data.title}</h1>
-        <div className="prose lg:prose-xl">
-          {/* Rendering RichText is complex w/ Lexical. For now, JSON dump or basic text placeholder */}
-          {/* Ideally use @payloadcms/richtext-lexical/react's RichText component or custom serializer */}
-          <pre className="bg-gray-100 p-4 rounded overflow-auto text-sm">
-            {JSON.stringify(data.content, null, 2)}
-          </pre>
-          <p className="italic text-gray-500 mt-4">(RichText rendering requires a parser implementation)</p>
-        </div>
+        <div
+          className="prose lg:prose-xl max-w-none"
+          dangerouslySetInnerHTML={{ __html: data.content_html }}
+        />
+
+        {/* Author Section */}
+        {data.user && typeof data.user === 'object' && (
+          <div className="author-bio mt-12 p-8 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="flex items-center gap-6">
+              <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl uppercase">
+                {data.user.username?.substring(0, 2) || 'AU'}
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">Meet the Author: {data.user.username}</h3>
+                {data.user.bio && <p className="text-gray-600 mt-1 max-w-2xl">{data.user.bio}</p>}
+
+                {data.user.socialLinks && (
+                  <div className="flex gap-4 mt-4">
+                    {Object.entries(data.user.socialLinks).map(([platform, url]) => {
+                      if (!url) return null;
+                      return (
+                        <a
+                          key={platform}
+                          href={url as string}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors capitalize"
+                        >
+                          {platform}
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

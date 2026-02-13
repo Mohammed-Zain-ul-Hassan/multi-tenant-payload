@@ -123,6 +123,10 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       password: 'test',
       tenants: [{ roles: ['tenant-admin'], tenant: tenant1.id }],
       username: 'tenant1',
+      socialLinks: {
+        linkedin: 'https://linkedin.com/in/tenant1',
+        twitter: 'https://twitter.com/tenant1',
+      },
     },
     overrideAccess: true,
     draft: false,
@@ -136,6 +140,10 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       password: 'test',
       tenants: [{ roles: ['tenant-admin'], tenant: tenant2.id }],
       username: 'tenant2',
+      socialLinks: {
+        instagram: 'https://instagram.com/tenant2',
+        tiktok: 'https://tiktok.com/@tenant2',
+      },
     },
     overrideAccess: true,
     draft: false,
@@ -149,6 +157,10 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       password: 'test',
       tenants: [{ roles: ['tenant-admin'], tenant: tenant3.id }],
       username: 'tenant3',
+      socialLinks: {
+        website: 'https://tenant3.edu',
+        linkedin: 'https://linkedin.com/in/tenant3',
+      },
     },
     overrideAccess: true,
     draft: false,
@@ -167,6 +179,9 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
         { roles: ['tenant-admin'], tenant: tenant3.id },
       ],
       username: 'multi-admin',
+      socialLinks: {
+        linkedin: 'https://linkedin.com/in/multiadmin',
+      },
     },
     overrideAccess: true,
     draft: false,

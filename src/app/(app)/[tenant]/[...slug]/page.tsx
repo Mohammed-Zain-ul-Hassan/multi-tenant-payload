@@ -57,6 +57,7 @@ export default async function Page({
         },
       ],
     },
+    depth: 1, // Populate user/author data
   });
 
   const blog = blogsQuery.docs[0];

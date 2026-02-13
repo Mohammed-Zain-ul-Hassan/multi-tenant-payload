@@ -30,39 +30,25 @@ export async function POST(req: Request) {
         } else if (type === 'keywords') {
             result = (await generateKeywords(input, brandVoice)) || '';
         } else if (type === 'full-article') {
-            const markdown = (await generateFullArticle(input, brandVoice)) || '';
-
-            // Convert Markdown to a simple Lexical JSON structure for Payload 3.0
-            // This ensures the content is populated even if full conversion is complex.
-            result = {
-                root: {
-                    type: 'root',
-                    children: [
-                        {
-                            type: 'paragraph',
-                            children: [
-                                {
-                                    detail: 0,
-                                    format: 0,
-                                    mode: 'normal',
-                                    style: '',
-                                    text: markdown,
-                                    type: 'text',
-                                    version: 1,
-                                },
-                            ],
-                            direction: 'ltr',
-                            format: '',
-                            indent: 0,
-                            version: 1,
-                        },
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    version: 1,
+            // Smart Linking: Fetch existing blogs to interlink
+            const existingBlogs = await payload.find({
+                collection: 'blogs',
+                where: {
+                    tenant: { equals: tenantId }
                 },
-            };
+                limit: 10
+            });
+
+            // Ensure we only pass strings to internalLinks
+            const internalLinks = existingBlogs.docs
+                .map(doc => doc.slug)
+                .filter((slug): slug is string => typeof slug === 'string');
+
+            const markdown = (await generateFullArticle(input, brandVoice, internalLinks)) || '';
+
+            // Import the Lexical Bridge utility
+            const { markdownToLexical } = await import('@/utilities/markdownToLexical');
+            result = await markdownToLexical(markdown);
         } else {
             return NextResponse.json({ success: false, error: 'Invalid type' }, { status: 400 });
         }

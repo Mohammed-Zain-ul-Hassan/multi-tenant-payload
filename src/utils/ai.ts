@@ -10,7 +10,7 @@ export const genAI = new GoogleGenerativeAI(apiKey || '');
 
 // Default model to use
 export const geminiModel = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.5-flash-lite',
 });
 
 /**
@@ -65,10 +65,11 @@ export async function generateKeywords(content: string, brandVoice?: string) {
 /**
  * Generates a full structured blog article in Markdown.
  */
-export async function generateFullArticle(topic: string, brandVoice?: string) {
+export async function generateFullArticle(topic: string, brandVoice?: string, internalLinks?: string[]) {
     const prompt = `
     You are a professional content creator. Generate a structured blog article in Markdown for the following topic.
     ${brandVoice ? `Brand Voice: ${brandVoice}` : ''}
+    ${internalLinks && internalLinks.length > 0 ? `Internal links to reference (if relevant to the topic): ${internalLinks.join(', ')}` : ''}
     
     Topic: ${topic}
     
@@ -77,6 +78,7 @@ export async function generateFullArticle(topic: string, brandVoice?: string) {
     - Use H2 subheadings.
     - Include bullet points where appropriate.
     - Professional and engaging tone.
+    ${internalLinks && internalLinks.length > 0 ? '- Naturally interlink to the provided internal links using Markdown syntax [text](slug).' : ''}
     
     Return ONLY the Markdown content.
   `;

@@ -78,6 +78,14 @@ export async function POST(req: Request) {
         const targetAudience = (tenant as any).aiStrategy?.targetAudience || 'general audience'
         const keywords = (tenant as any).aiStrategy?.keywords?.map((k: any) => k.keyword).join(', ') || ''
 
+        // Smart Linking: Fetch existing blogs
+        const existingBlogs = await payload.find({
+            collection: 'blogs',
+            where: { tenant: { equals: tenantId } },
+            limit: 10,
+        })
+        const internalLinks = existingBlogs.docs.map(doc => doc.slug).join(', ')
+
         // 3. Prompt Gemini
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' })
@@ -88,6 +96,7 @@ export async function POST(req: Request) {
     - Tone: ${brandVoice}
     - Target Audience: ${targetAudience}
     - Keywords to include: ${keywords}
+    ${internalLinks ? `- Internal links to reference (interlink naturally): ${internalLinks}` : ''}
     
     Formatting Rules:
     - Use strictly GitHub Flavored Markdown.
@@ -95,6 +104,7 @@ export async function POST(req: Request) {
     - Use standard Markdown lists (unordered and ordered).
     - If you need to include a table, use valid GFM table syntax.
     - If you need to include raw HTML (like a complex layout), wrap it in a code block with language 'html'.
+    ${internalLinks ? '- Use Markdown syntax [text](slug) for internal links.' : ''}
     `
 
         const result = await model.generateContent(prompt)
