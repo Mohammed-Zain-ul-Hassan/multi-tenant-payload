@@ -18,7 +18,7 @@ export const setTenantAndUploadedBy: CollectionBeforeChangeHook = async ({
     try {
       const user = await req.payload.findByID({
         collection: 'users',
-        id: req.user.id,
+        id: req.user?.id,
         depth: 2, // Récupère les données du tenant en profondeur
       })
 
@@ -29,9 +29,9 @@ export const setTenantAndUploadedBy: CollectionBeforeChangeHook = async ({
             tenantRel &&
             tenantRel.tenant &&
             typeof tenantRel.tenant === 'object' &&
-            tenantRel.tenant.id
+            tenantRel.tenant?.id
           ) {
-            data.tenant = tenantRel.tenant.id
+            data.tenant = tenantRel.tenant?.id
             break // Sort de la boucle après avoir trouvé le premier tenant valide
           }
         }

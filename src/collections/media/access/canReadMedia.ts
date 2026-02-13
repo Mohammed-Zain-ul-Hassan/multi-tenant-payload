@@ -10,7 +10,7 @@ export const canReadMedia: Access = ({ req }) => {
   // Si l'utilisateur est connecté et a des tenants, on applique la restriction
   if (req.user && req.user.tenants && req.user.tenants.length > 0) {
     const validTenantIds = req.user.tenants
-      .map(({ tenant }) => (typeof tenant === 'object' ? tenant.id : null))
+      .map(({ tenant }) => (typeof tenant === 'object' ? tenant?.id : null))
       .filter((id): id is string => id !== null)
 
     return {

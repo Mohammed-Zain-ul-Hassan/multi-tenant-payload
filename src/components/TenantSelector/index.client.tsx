@@ -22,7 +22,7 @@ export const TenantSelector = ({ initialCookie }: { initialCookie?: string }) =>
         if (typeof tenant === 'string') {
           return tenant
         }
-        return tenant.id
+        return tenant?.id
       }
     }) || []
 

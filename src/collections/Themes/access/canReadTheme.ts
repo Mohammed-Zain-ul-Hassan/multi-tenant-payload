@@ -12,7 +12,7 @@ export const canReadTheme: Access = ({ req: { user } }) => {
         {
           tenant: {
             in: user?.tenants?.map((tenant) =>
-              typeof tenant.tenant === 'object' ? tenant.tenant.id : tenant.tenant
+              typeof tenant.tenant === 'object' ? tenant.tenant?.id : tenant.tenant
             ),
           },
         },

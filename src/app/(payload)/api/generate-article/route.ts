@@ -36,7 +36,7 @@ export async function POST(req: Request) {
             collection: 'blogs',
             where: {
                 user: {
-                    equals: user.id,
+                    equals: user?.id,
                 },
                 createdAt: {
                     greater_than: oneMinuteAgo.toISOString(),
@@ -150,7 +150,7 @@ export async function POST(req: Request) {
                 tenant: tenantId,
                 content: content as any, // Cast to any to avoid strict type checks on huge Lexical objects
                 _status: 'draft',
-                user: user.id,
+                user: user?.id,
                 slug: topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
                 featuredImage: '', // Placeholder
             } as any,

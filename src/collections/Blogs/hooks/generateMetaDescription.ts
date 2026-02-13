@@ -6,7 +6,7 @@ const generateMetaDescription: CollectionAfterChangeHook = async ({ doc, operati
   if (operation === 'create' && !doc.metaDescription && doc.content) {
     try {
       // 1. Fetch Tenant context
-      const tenantId = typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant
+      const tenantId = typeof doc.tenant === 'object' ? doc.tenant?.id : doc.tenant
       if (!tenantId) return
 
       const tenant = await req.payload.findByID({

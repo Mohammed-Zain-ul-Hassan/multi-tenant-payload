@@ -21,7 +21,7 @@ export const readAccess: Access<User> = (args) => {
       {
         // L'utilisateur peut se voir lui-même
         id: {
-          equals: req.user.id,
+          equals: req.user?.id,
         },
       },
       {

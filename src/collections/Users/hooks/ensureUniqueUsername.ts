@@ -10,9 +10,9 @@ export const ensureUniqueUsername: FieldHook = async ({ data, originalDoc, req, 
     return value
   }
 
-  const incomingTenantID = typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
+  const incomingTenantID = typeof data?.tenant === 'object' ? data.tenant?.id : data?.tenant
   const currentTenantID =
-    typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant
+    typeof originalDoc?.tenant === 'object' ? originalDoc.tenant?.id : originalDoc?.tenant
   const tenantIDToMatch = incomingTenantID || currentTenantID
 
   const findDuplicateUsers = await req.payload.find({

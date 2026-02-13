@@ -4,5 +4,5 @@ export const isAccessingSelf: Access = ({ id, req }) => {
   if (!req?.user) {
     return false
   }
-  return req.user.id === id
+  return req.user?.id === id
 }

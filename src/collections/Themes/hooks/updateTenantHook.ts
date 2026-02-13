@@ -11,7 +11,7 @@ export const updateTenantHook: CollectionBeforeChangeHook = async ({
 
     if (user && user.roles && !user.roles.includes('super-admin')) {
       // Mettre à jour data.tenant avec l'ID du tenant du document original
-      data.tenant = originalDoc.tenant.id
+      data.tenant = originalDoc.tenant?.id
     }
 
     return data

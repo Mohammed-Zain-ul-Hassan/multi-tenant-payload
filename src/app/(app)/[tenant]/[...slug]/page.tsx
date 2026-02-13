@@ -52,7 +52,7 @@ export default async function Page({
         },
         {
           tenant: {
-            equals: tenant.id,
+            equals: tenant?.id,
           },
         },
       ],

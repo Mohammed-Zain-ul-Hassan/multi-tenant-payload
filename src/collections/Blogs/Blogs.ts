@@ -241,7 +241,7 @@ const Blogs: CollectionConfig = {
                         tenant.roles?.includes('tenant-admin') ||
                         tenant.roles?.includes('tenant-viewer'),
                     ) // Filtre les tenants où l'utilisateur est tenant-admin ou tenant-viewer
-                    .map(({ tenant }) => (typeof tenant === 'string' ? tenant : tenant.id)) || [],
+                    .map(({ tenant }) => (typeof tenant === 'string' ? tenant : tenant?.id)) || [],
               },
             },
             {

@@ -10,9 +10,9 @@ export const ensureUniqueSlug: FieldHook = async ({ data, originalDoc, req, valu
     return value;
   }
 
-  const incomingTenantID = typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant;
+  const incomingTenantID = typeof data?.tenant === 'object' ? data.tenant?.id : data?.tenant;
   const currentTenantID =
-    typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant;
+    typeof originalDoc?.tenant === 'object' ? originalDoc.tenant?.id : originalDoc?.tenant;
   const tenantIDToMatch = incomingTenantID || currentTenantID;
 
   const findDuplicateBlogs = await req.payload.find({
