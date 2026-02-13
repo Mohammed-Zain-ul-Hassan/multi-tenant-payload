@@ -16,13 +16,17 @@ export const RenderPage = ({ data, type }: { data: any; type?: string }) => {
     return (
       <div className="container mx-auto py-10 max-w-4xl px-4">
         {data.featuredImage && (
-          <div className="w-full h-96 relative mb-8 rounded-lg overflow-hidden">
-            {/* Ideally verify if 'url' exists on featuredImage, assuming it's poplulated */}
-            <img
-              src={data.featuredImage.url}
-              alt={data.featuredImage.alt || data.title}
-              className="object-cover w-full h-full"
-            />
+          <div className="premium-flex-center mb-12">
+            <div className="premium-image-wrapper">
+              <img
+                src={data.featuredImage.url}
+                alt={data.featuredImage.alt || data.title}
+                className="premium-featured-img"
+              />
+            </div>
+            {data.featuredImage.caption && (
+              <p className="mt-4 text-sm text-gray-500 italic text-center">{data.featuredImage.caption}</p>
+            )}
           </div>
         )}
         <h1 className="text-5xl font-bold mb-6">{data.title}</h1>
@@ -32,14 +36,15 @@ export const RenderPage = ({ data, type }: { data: any; type?: string }) => {
         />
 
         {/* Author Section */}
+        {/* Temporarily hidden as requested
         {data.user && typeof data.user === 'object' && (
           <div className="author-bio mt-12 p-8 bg-gray-50 rounded-xl border border-gray-100">
             <div className="flex items-center gap-6">
               <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl uppercase">
-                {data.user.username?.substring(0, 2) || 'AU'}
+                {(data.user.username || data.user.email || 'AU').substring(0, 2)}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Meet the Author: {data.user.username}</h3>
+                <h3 className="text-xl font-bold text-gray-900">Meet the Author: {data.user.username || data.user.email || 'Anonymous Author'}</h3>
                 {data.user.bio && <p className="text-gray-600 mt-1 max-w-2xl">{data.user.bio}</p>}
 
                 {data.user.socialLinks && (
@@ -64,6 +69,7 @@ export const RenderPage = ({ data, type }: { data: any; type?: string }) => {
             </div>
           </div>
         )}
+        */}
       </div>
     );
   }

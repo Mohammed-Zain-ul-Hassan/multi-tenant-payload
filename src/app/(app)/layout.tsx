@@ -1,4 +1,5 @@
 import React from 'react'
+import { ThemeProvider } from '@/providers/ThemeProvider'
 
 import './index.scss'
 
@@ -12,8 +13,12 @@ export const metadata = {
 // eslint-disable-next-line no-restricted-exports
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className={baseClass} lang="fr">
-      <body>{children}</body>
+    <html className={baseClass} lang="fr" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

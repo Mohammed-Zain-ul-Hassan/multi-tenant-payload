@@ -127,6 +127,21 @@ const Blogs: CollectionConfig = {
                 },
                 nodeTypes: ['block'],
               },
+              {
+                converter: ({ node }: any) => {
+                  // Basic relationship converter to avoid "unknown node"
+                  const value = node.value;
+                  const label = (typeof value === 'object' && value !== null)
+                    ? (value.title || value.username || value.name || value.id)
+                    : (value || 'Related Content');
+
+                  return `<span class="lexical-relation-pill">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    ${label}
+                  </span>`;
+                },
+                nodeTypes: ['relationship'],
+              },
             ],
           }),
           TableFeature(),
