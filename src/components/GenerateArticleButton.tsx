@@ -28,13 +28,12 @@ export const GenerateArticleButton: React.FC = () => {
             return
         }
 
-        let topic = title?.value as string
+        const topic = title?.value as string
 
-        if (!topic) {
-            topic = window.prompt('What topic should the article be about?') || ''
+        if (!topic || topic.trim() === '') {
+            toast.error("Please enter a Titre de l'article first.")
+            return
         }
-
-        if (!topic) return
 
         setIsLoading(true)
         const toastId = toast.loading('Generating article... This may take a minute.')
