@@ -71,7 +71,7 @@ export const GenerateArticleButton: React.FC = () => {
         } finally {
             setIsLoading(false)
         }
-    }, [tenantId, router])
+    }, [tenantId, router, title?.value])
 
     return (
         <div style={{ marginBottom: '20px' }}>
