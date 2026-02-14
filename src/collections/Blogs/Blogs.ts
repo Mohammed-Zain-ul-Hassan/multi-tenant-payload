@@ -126,7 +126,20 @@ const Blogs: CollectionConfig = {
               ...defaultConverters,
               {
                 converter: ({ node }: any) => {
-                  return `<pre class="code-block"><code class="language-${node.fields.language}">${node.fields.code}</code></pre>`
+                  if (node.fields?.blockType === 'Code') {
+                    const lang = node.fields.language || 'code'
+                    return `
+                      <div class="premium-code-block-container">
+                        <div class="premium-code-block-header">
+                          <span class="premium-code-block-lang">${lang}</span>
+                          <span class="premium-code-block-dot red"></span>
+                          <span class="premium-code-block-dot yellow"></span>
+                          <span class="premium-code-block-dot green"></span>
+                        </div>
+                        <pre class="premium-code-block"><code class="language-${lang}">${node.fields.code}</code></pre>
+                      </div>`
+                  }
+                  return ''
                 },
                 nodeTypes: ['block'],
               },
