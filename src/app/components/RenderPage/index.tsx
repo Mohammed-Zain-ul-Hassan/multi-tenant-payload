@@ -14,9 +14,9 @@ export const RenderPage = ({ data, type }: { data: any; type?: string }) => {
 
   if (type === "blog") {
     return (
-      <div className="container mx-auto py-10 max-w-4xl px-4">
+      <div className="container mx-auto py-16 px-6 lg:px-12 max-w-4xl">
         {data.featuredImage && (
-          <div className="premium-flex-center mb-12">
+          <div className="premium-flex-center mb-16">
             <div className="premium-image-wrapper">
               <img
                 src={data.featuredImage.url}
@@ -25,11 +25,11 @@ export const RenderPage = ({ data, type }: { data: any; type?: string }) => {
               />
             </div>
             {data.featuredImage.caption && (
-              <p className="mt-4 text-sm text-gray-500 italic text-center">{data.featuredImage.caption}</p>
+              <p className="mt-6 text-base text-gray-500 italic text-center">{data.featuredImage.caption}</p>
             )}
           </div>
         )}
-        <h1 className="text-5xl font-bold mb-6">{data.title}</h1>
+        <h1 className="text-5xl lg:text-6xl font-extrabold mb-10 tracking-tight leading-tight">{data.title}</h1>
         <div
           className="prose lg:prose-xl max-w-none"
           dangerouslySetInnerHTML={{ __html: data.content_html }}
