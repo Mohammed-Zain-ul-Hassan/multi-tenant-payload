@@ -18,7 +18,9 @@ const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    useAPIKey: true,
+  },
   endpoints: [externalUsersLogin],
   fields: [
     {
